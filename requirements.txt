@@ -1,0 +1,17 @@
+tensorflow[and-cuda]
+jupyterlab
+polars
+pandas
+numpy
+matplotlib
+seaborn
+dvc
+python-box
+pyYAML
+types-pyYAML
+tqdm
+ensure
+joblib
+scipy
+FASTAPI
+
