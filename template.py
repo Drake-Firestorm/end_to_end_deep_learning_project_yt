@@ -23,6 +23,7 @@ list_of_files = [
     "requirements.txt",
     "research/trials.ipynb",
     "templates/index.html",
+    "logs/running_logs.log",
 ]
 
 for filepath in list_of_files:
