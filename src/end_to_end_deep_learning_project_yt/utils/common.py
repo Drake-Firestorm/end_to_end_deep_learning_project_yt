@@ -1,11 +1,9 @@
-import base64
 import json
 import os
 from pathlib import Path
-from typing import Any
 
 import yaml
-from pydantic import validate_call, FilePath, ValidationError, BaseModel
+from pydantic import BaseModel, FilePath, validate_call
 
 from .custom_logger import logger
 
@@ -42,7 +40,7 @@ def read_yaml(path_to_yaml: FilePath, schema: type[BaseModel]) -> BaseModel:
 
 
 @validate_call(validate_return=True)
-def create_directories(path_to_directories: list, verbose=False):
+def create_directories(path_to_directories: list, verbose=True):
     """
     Create list of directories
 

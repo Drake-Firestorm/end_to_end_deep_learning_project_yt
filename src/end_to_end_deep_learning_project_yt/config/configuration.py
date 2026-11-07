@@ -1,9 +1,13 @@
+import os
+from pathlib import Path
+
 from end_to_end_deep_learning_project_yt.constants import constants
 from end_to_end_deep_learning_project_yt.entity.config_entity import (
     Config,
     DataIngestionConfig,
     Params,
     ParamsConfig,
+    PrepareCallbacksConfig,
 )
 from end_to_end_deep_learning_project_yt.utils.common import (
     create_directories,
@@ -38,3 +42,19 @@ class ConfigurationManager:
         params_config = ParamsConfig(prepare_base_model=config, params=params)
 
         return params_config
+
+    def get_prepare_callback_config(self) -> PrepareCallbacksConfig:
+        prepare_callback_config = self.config.prepare_callbacks
+
+        model_ckpt_dir = os.path.dirname(
+            prepare_callback_config.checkpoint_model_filepath
+        )
+
+        create_directories(
+            [
+                Path(model_ckpt_dir),
+                Path(prepare_callback_config.tensorboard_root_log_dir),
+            ]
+        )
+
+        return prepare_callback_config

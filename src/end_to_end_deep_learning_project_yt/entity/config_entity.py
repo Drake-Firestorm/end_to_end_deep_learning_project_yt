@@ -37,9 +37,18 @@ class ParamsConfig(BaseModel):
     params: Params
 
 
+class PrepareCallbacksConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    root_dir: Path
+    tensorboard_root_log_dir: Path
+    checkpoint_model_filepath: Path
+
+
 class Config(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     artifacts_root: Path
     data_ingestion: DataIngestionConfig
     prepare_base_model: PrepareBaseModelConfig
+    prepare_callbacks: PrepareCallbacksConfig
