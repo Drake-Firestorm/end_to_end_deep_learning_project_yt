@@ -8,6 +8,7 @@ from end_to_end_deep_learning_project_yt.entity.config_entity import (
     Params,
     ParamsConfig,
     PrepareCallbacksConfig,
+    TrainingConfig,
 )
 from end_to_end_deep_learning_project_yt.utils.common import (
     create_directories,
@@ -58,3 +59,19 @@ class ConfigurationManager:
         )
 
         return prepare_callback_config
+
+    def get_training_config(self) -> TrainingConfig:
+        training_data = os.path.join(
+            self.config.data_ingestion.unzip_dir, "Chicken-fecal-images"
+        )
+
+        create_directories([Path(self.config.training.root_dir)])
+
+        training_config = TrainingConfig(
+            base_config=self.config.training,
+            updated_base_model_path=self.config.prepare_base_model.updated_base_model_path,
+            training_data=training_data,
+            params=self.params,
+        )
+
+        return training_config

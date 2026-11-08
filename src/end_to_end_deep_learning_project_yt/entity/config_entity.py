@@ -28,6 +28,9 @@ class Params(BaseModel):
     include_top: bool = Field(..., alias="INCLUDE_TOP")
     weights: str = Field(..., alias="WEIGHTS")
     classes: int = Field(..., alias="CLASSES")
+    epochs: int = Field(..., alias="EPOCHS")
+    batch_size: int = Field(..., alias="BATCH_SIZE")
+    is_augmentation: bool = Field(..., alias="AUGMENTATION")
 
 
 class ParamsConfig(BaseModel):
@@ -45,6 +48,13 @@ class PrepareCallbacksConfig(BaseModel):
     checkpoint_model_filepath: Path
 
 
+class TrainingBaseConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    root_dir: Path
+    trained_model_path: Path
+
+
 class Config(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -52,3 +62,13 @@ class Config(BaseModel):
     data_ingestion: DataIngestionConfig
     prepare_base_model: PrepareBaseModelConfig
     prepare_callbacks: PrepareCallbacksConfig
+    training: TrainingBaseConfig
+
+
+class TrainingConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    base_config: TrainingBaseConfig
+    updated_base_model_path: Path
+    training_data: Path
+    params: Params
