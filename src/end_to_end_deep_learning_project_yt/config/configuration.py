@@ -5,6 +5,7 @@ from end_to_end_deep_learning_project_yt.constants import constants
 from end_to_end_deep_learning_project_yt.entity.config_entity import (
     Config,
     DataIngestionConfig,
+    EvaluationConfig,
     Params,
     ParamsConfig,
     PrepareCallbacksConfig,
@@ -75,3 +76,13 @@ class ConfigurationManager:
         )
 
         return training_config
+
+    def get_validation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model="artifacts/training/model.keras",
+            training_data="artifacts/data_ingestion/Chicken-fecal-images/",
+            params_image_size=self.params.image_size,
+            params_batch_size=self.params.batch_size,
+        )
+
+        return eval_config

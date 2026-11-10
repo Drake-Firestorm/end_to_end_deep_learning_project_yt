@@ -72,3 +72,11 @@ class TrainingConfig(BaseModel):
     updated_base_model_path: Path
     training_data: Path
     params: Params
+
+
+class EvaluationConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    path_of_model: Path
+    training_data: Path
+    params_image_size: list
+    params_batch_size: int
