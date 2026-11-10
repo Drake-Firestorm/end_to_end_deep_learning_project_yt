@@ -1,0 +1,126 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: .venv/bin/python 
+      src/end_to_end_deep_learning_project_yt/pipeline/stage_01_data_ingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 6f8c3197903cce170408f31e76561ccb
+      size: 802
+    - path: 
+        src/end_to_end_deep_learning_project_yt/pipeline/stage_01_data_ingestion.py
+      hash: md5
+      md5: 1af1c704651da694db9b00e47593c2c0
+      size: 991
+    outs:
+    - path: artifacts/data_ingestion/Chicken-fecal-images
+      hash: md5
+      md5: 9e1f8dd2eae3c29e9d635df89d438ae4.dir
+      size: 12207807
+      nfiles: 390
+  prepare_base_model:
+    cmd: .venv/bin/python 
+      src/end_to_end_deep_learning_project_yt/pipeline/stage_02_prepare_base_model.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 6f8c3197903cce170408f31e76561ccb
+      size: 802
+    - path: 
+        src/end_to_end_deep_learning_project_yt/pipeline/stage_02_prepare_base_model.py
+      hash: md5
+      md5: 023e246d5bed5b6a0d1063b20c0c6d2d
+      size: 1077
+    params:
+      params.yaml:
+        CLASSES: 2
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        INCLUDE_TOP: false
+        LEARNING_RATE: 0.01
+        WEIGHTS: imagenet
+    outs:
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: 14c2cefd70e4385af04dbaebbcaf7099.dir
+      size: 118074470
+      nfiles: 2
+  training:
+    cmd: .venv/bin/python 
+      src/end_to_end_deep_learning_project_yt/pipeline/stage_03_training.py
+    deps:
+    - path: artifacts/data_ingestion/Chicken-fecal-images
+      hash: md5
+      md5: 9e1f8dd2eae3c29e9d635df89d438ae4.dir
+      size: 12207807
+      nfiles: 390
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: 14c2cefd70e4385af04dbaebbcaf7099.dir
+      size: 118074470
+      nfiles: 2
+    - path: config/config.yaml
+      hash: md5
+      md5: 6f8c3197903cce170408f31e76561ccb
+      size: 802
+    - path: 
+        src/end_to_end_deep_learning_project_yt/components/prepare_callbacks.py
+      hash: md5
+      md5: b7cb59399eb491d69351ec94470bc8f3
+      size: 872
+    - path: 
+        src/end_to_end_deep_learning_project_yt/pipeline/stage_03_training.py
+      hash: md5
+      md5: a47b1ab49d1b654ae78eec1eab98de55
+      size: 1418
+    params:
+      params.yaml:
+        AUGMENTATION: true
+        BATCH_SIZE: 16
+        EPOCHS: 1
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: artifacts/training/model.keras
+      hash: md5
+      md5: f948087cad8348409c3cf5e28c6f8b9c
+      size: 59141867
+  evaluation:
+    cmd: .venv/bin/python 
+      src/end_to_end_deep_learning_project_yt/pipeline/stage_04_evaluation.py
+    deps:
+    - path: artifacts/data_ingestion/Chicken-fecal-images
+      hash: md5
+      md5: 9e1f8dd2eae3c29e9d635df89d438ae4.dir
+      size: 12207807
+      nfiles: 390
+    - path: artifacts/training/model.keras
+      hash: md5
+      md5: f948087cad8348409c3cf5e28c6f8b9c
+      size: 59141867
+    - path: config/config.yaml
+      hash: md5
+      md5: 6f8c3197903cce170408f31e76561ccb
+      size: 802
+    - path: 
+        src/end_to_end_deep_learning_project_yt/pipeline/stage_04_evaluation.py
+      hash: md5
+      md5: 74c513f6ac9675dc1c3f66fb6ec307f5
+      size: 1023
+    params:
+      params.yaml:
+        BATCH_SIZE: 16
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: scores.json
+      hash: md5
+      md5: 8e805d46238ab9d8322b3b4f40173aa2
+      size: 69
